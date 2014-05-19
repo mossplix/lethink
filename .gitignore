@@ -6,3 +6,4 @@ doc
 include
 logs
 test/*.beam
+*.swp

@@ -24,9 +24,9 @@ datum_value(#datum{ type = 'R_OBJECT', r_object = Objects }) ->
 datum_assocpair_tuple(Obj) ->
     {list_to_binary(Obj#datum_assocpair.key), datum_value(Obj#datum_assocpair.val)}.
 
--spec global_db(binary()) -> #query_assocpair{}.
+-spec global_db(binary()) -> #rquery_assocpair{}.
 global_db(Value) ->
-    #query_assocpair {
+    #rquery_assocpair {
         key = <<"db">>,
         val = #term {
             type = 'DB',

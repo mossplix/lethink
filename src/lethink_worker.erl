@@ -3,7 +3,7 @@
 
 -export([start_link/2,
          use/2,
-         query/2]).
+         rquery/2]).
 
 -export([init/1,
         handle_call/3,
@@ -32,10 +32,10 @@ start_link(Ref, Opts) ->
 use(Pid, Name) when is_binary(Name) ->
     gen_server:cast(Pid, {use, Name}).
 
--spec query(pid(), #term{}) -> lethink:response().
-query(Pid, Query) ->
+-spec rquery(pid(), #term{}) -> lethink:response().
+rquery(Pid, Query) ->
     Timeout = application:get_env(lethink, timeout, 30000),
-    gen_server:call(Pid, {query, Query}, Timeout).
+    gen_server:call(Pid, {rquery, Query}, Timeout).
 
 -spec init([[{atom, any()}]]) -> {ok, #state{}}.
 init([Opts]) ->
@@ -52,10 +52,10 @@ init([Opts]) ->
     {ok, State}.
 
 -spec handle_call(tuple(), pid(), #state{}) -> {reply, ok | lethink:response(), #state{}}.
-handle_call({query, Term}, _From, State) ->
-    Query = #query {
+handle_call({rquery, Term}, _From, State) ->
+    Query = #rquery {
         type = 'START',
-        query = Term,
+        rquery = Term,
         token = State#state.token,
         global_optargs = [ql2_util:global_db(State#state.database)]
     },
@@ -87,13 +87,13 @@ terminate(Reason, State) ->
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
--spec send_and_recv(#query{}, port()) -> lethink:response().
+-spec send_and_recv(#rquery{}, port()) -> lethink:response().
 send_and_recv(Query, Socket) ->
     send(Query, Socket),
     Response = recv(Socket),
     handle_response(ql2_pb:decode_response(Response)).
 
--spec send(#query{}, port()) -> any().
+-spec send(#rquery{}, port()) -> any().
 send(Query, Socket) ->
     Iolist = ql2_pb:encode_query(Query),
     Length = iolist_size(Iolist),

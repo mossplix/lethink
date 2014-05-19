@@ -7,7 +7,7 @@
         add_pool/3,
         remove_pool/1,
         use/2,
-        query/2
+        rquery/2
     ]).
 
 -type response() :: success() | error().
@@ -85,8 +85,8 @@ use(Ref, Db) when is_binary(Db) ->
                 lethink_worker:use(Pid, Db)
         end, WorkerPids).
 
--spec query(any(), list()) -> response().
-query(Ref, OpList) ->
+-spec rquery(any(), list()) -> response().
+rquery(Ref, OpList) ->
     Term = lethink_ast:build_query(OpList),
     WorkerPid = lethink_server:get_worker(Ref),
-    lethink_worker:query(WorkerPid, Term).
+    lethink_worker:rquery(WorkerPid, Term).

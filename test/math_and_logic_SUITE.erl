@@ -49,15 +49,15 @@ end_per_suite(_Config) ->
 
 %% Tests
 math(_Config) ->
-    {ok, 3.0} = lethink:query(pool, [{expr, 1}, {add, 2}]),
-    {ok, <<"ab">>} = lethink:query(pool, [{expr, <<"a">>}, {add, <<"b">>}]),
-    {ok, 2.0} = lethink:query(pool, [{expr, 5}, {sub, 3}]),
-    {ok, 2.0} = lethink:query(pool, [{expr, 5.0}, {sub, 3}]),
-    {ok, 2.0} = lethink:query(pool, [{expr, 5}, {sub, 3.0}]),
-    {ok, 2.0} = lethink:query(pool, [{expr, 5.0}, {sub, 3.0}]),
-    {ok, 15.0} = lethink:query(pool, [{expr, 3}, {mul, 5}]),
-    {ok, 3.0} = lethink:query(pool, [{expr, 12}, {div_, 4}]),
-    {ok, 1.0} = lethink:query(pool, [{expr, 8}, {mod, 7}]).
+    {ok, 3.0} = lethink:rquery(pool, [{expr, 1}, {add, 2}]),
+    {ok, <<"ab">>} = lethink:rquery(pool, [{expr, <<"a">>}, {add, <<"b">>}]),
+    {ok, 2.0} = lethink:rquery(pool, [{expr, 5}, {sub, 3}]),
+    {ok, 2.0} = lethink:rquery(pool, [{expr, 5.0}, {sub, 3}]),
+    {ok, 2.0} = lethink:rquery(pool, [{expr, 5}, {sub, 3.0}]),
+    {ok, 2.0} = lethink:rquery(pool, [{expr, 5.0}, {sub, 3.0}]),
+    {ok, 15.0} = lethink:rquery(pool, [{expr, 3}, {mul, 5}]),
+    {ok, 3.0} = lethink:rquery(pool, [{expr, 12}, {div_, 4}]),
+    {ok, 1.0} = lethink:rquery(pool, [{expr, 8}, {mod, 7}]).
 
 logic(_Config) ->
     ok.

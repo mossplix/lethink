@@ -30,8 +30,8 @@ all() ->
 init_per_suite(Config) ->
     lethink:start(),
     lethink:add_pool(pool, 1),
-    lethink:query(pool, [{db_create, <<"function_db">>}]),
-    lethink:query(pool, [{db, <<"function_db">>}, {table_create, <<"marvel">>}]),
+    lethink:rquery(pool, [{db_create, <<"function_db">>}]),
+    lethink:rquery(pool, [{db, <<"function_db">>}, {table_create, <<"marvel">>}]),
     lethink:use(pool, <<"function_db">>),
     Config.
 
@@ -42,7 +42,7 @@ init_per_suite(Config) ->
 %%--------------------------------------------------------------------
 
 end_per_suite(_Config) ->
-    lethink:query(pool, [{db_drop, <<"function_db">>}]),
+    lethink:rquery(pool, [{db_drop, <<"function_db">>}]),
     lethink:remove_pool(pool),
     lethink:stop(),
     ok.
@@ -51,8 +51,8 @@ end_per_suite(_Config) ->
 update(_Config) ->
     TestData = [{[{<<"id">>, 1}, {<<"hero">>, <<"batman">>}, {<<"age">>, 30}]},
                 {[{<<"id">>, 2}, {<<"hero">>, <<"superman">>}, {<<"age">>, 50}]}],
-    {ok, _} = lethink:query(pool, [{table, <<"marvel">>}, {insert, TestData}]),
-    {ok, _} = lethink:query(pool, [{table, <<"marvel">>},
+    {ok, _} = lethink:rquery(pool, [{table, <<"marvel">>}, {insert, TestData}]),
+    {ok, _} = lethink:rquery(pool, [{table, <<"marvel">>},
                                    {update, {[{<<"age">>, [{row}, {get_field, <<"age">>}, {add, 1}]}]}}]),
-    {ok, _} = lethink:query(pool, [{table, <<"marvel">>},
+    {ok, _} = lethink:rquery(pool, [{table, <<"marvel">>},
                                    {update, fun(Row) -> [Row, {get_field, <<"age">>}, {add, 1}] end}]).
