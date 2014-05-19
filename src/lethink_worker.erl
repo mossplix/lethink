@@ -34,7 +34,12 @@ use(Pid, Name) when is_binary(Name) ->
 
 -spec rquery(pid(), #term{}) -> lethink:response().
 rquery(Pid, Query) ->
-    Timeout = application:get_env(lethink, timeout, 30000),
+    Timeout = case application:get_env(lethink, timeout) of 
+      undefined ->
+        30000;
+      T ->
+        T
+    end,
     gen_server:call(Pid, {rquery, Query}, Timeout).
 
 -spec init([[{atom, any()}]]) -> {ok, #state{}}.
