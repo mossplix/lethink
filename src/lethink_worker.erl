@@ -37,7 +37,7 @@ rquery(Pid, Query) ->
     Timeout = case application:get_env(lethink, timeout) of 
       undefined ->
         30000;
-      T ->
+      {ok, T} ->
         T
     end,
     gen_server:call(Pid, {rquery, Query}, Timeout).
