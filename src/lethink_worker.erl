@@ -100,7 +100,7 @@ send_and_recv(Query, Socket) ->
 
 -spec send(#rquery{}, port()) -> any().
 send(Query, Socket) ->
-    Iolist = ql2_pb:encode_query(Query),
+    Iolist = ql2_pb:encode_rquery(Query),
     Length = iolist_size(Iolist),
     gen_tcp:send(Socket, [<<Length:32/little-unsigned>>, Iolist]).
 
